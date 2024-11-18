@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 1</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="animate-fade">
+        <h2>Calcular Promedio y Estado</h2>
+        <form id="form-ejercicio1">
+            <input type="number" name="nota1" id="nota1" placeholder="Nota 1 (10-70)" required>
+            <input type="number" name="nota2" id="nota2" placeholder="Nota 2 (10-70)" required>
+            <input type="number" name="nota3" id="nota3" placeholder="Nota 3 (10-70)" required>
+            <input type="number" name="asistencia" id="asistencia" placeholder="Asistencia (%)" required>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="resultado-ejercicio1" class="resultado"></div>
+    </div>
+
+    <script>
+        document.getElementById('form-ejercicio1').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const nota1 = document.getElementById('nota1').value;
+            const nota2 = document.getElementById('nota2').value;
+            const nota3 = document.getElementById('nota3').value;
+            const asistencia = document.getElementById('asistencia').value;
+
+            const response = await fetch('/ejercicio1', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `nota1=${nota1}&nota2=${nota2}&nota3=${nota3}&asistencia=${asistencia}`,
+            });
+
+            const data = await response.json();
+            const resultadoDiv = document.getElementById('resultado-ejercicio1');
+            resultadoDiv.innerHTML = `<p>Promedio: ${data.promedio.toFixed(2)}, Estado: ${data.estado}</p>`;
+        });
+    </script>
+</body>
+</html>

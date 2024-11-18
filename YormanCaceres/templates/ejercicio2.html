@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="animate-fade">
+        <h2>Nombre Más Largo</h2>
+        <form id="form-ejercicio2">
+            <input type="text" name="nombre1" id="nombre1" placeholder="Nombre 1" required>
+            <input type="text" name="nombre2" id="nombre2" placeholder="Nombre 2" required>
+            <input type="text" name="nombre3" id="nombre3" placeholder="Nombre 3" required>
+            <button type="submit">Enviar</button>
+        </form>
+        <div id="resultado-ejercicio2" class="resultado"></div>
+    </div>
+
+    <script>
+        document.getElementById('form-ejercicio2').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const nombre1 = document.getElementById('nombre1').value;
+            const nombre2 = document.getElementById('nombre2').value;
+            const nombre3 = document.getElementById('nombre3').value;
+
+            const response = await fetch('/ejercicio2', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `nombre1=${nombre1}&nombre2=${nombre2}&nombre3=${nombre3}`,
+            });
+
+            const data = await response.json();
+            const resultadoDiv = document.getElementById('resultado-ejercicio2');
+            resultadoDiv.innerHTML = `<p>Nombre más largo: ${data.nombre_mas_largo}, Longitud: ${data.longitud}</p>`;
+        });
+    </script>
+</body>
+</html>
